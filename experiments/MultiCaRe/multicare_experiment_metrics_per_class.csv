@@ -1,0 +1,65 @@
+sampling,class,training_counts,multilabel_f1,multiplex_f1,f1_gain
+normal,acid_fast,46,0.6400,0.6316,-0.0084
+normal,alcian_blue,25,0.2500,0.4444,0.1944
+normal,arthroscopy,57,0.5455,0.7200,0.1745
+normal,broncoscopy,220,0.7037,0.7018,-0.0020
+normal,colonoscopy,223,0.6182,0.6607,0.0425
+normal,congo_red,50,0.1176,0.2222,0.1046
+normal,ct + angiography,404,0.2069,0.1940,-0.0129
+normal,ct + not_angiography,14873,0.9426,0.9464,0.0038
+normal,cystoscopy,48,0.1429,0.3529,0.2101
+normal,echocardiogram + angiography,21,0.0000,0.0000,0.0000
+normal,echocardiogram + not_angiography,1186,0.8848,0.9020,0.0172
+normal,egd,112,0.4308,0.4561,0.0254
+normal,fish,165,0.6765,0.6486,-0.0278
+normal,gastroscopy,41,0.0000,0.0000,0.0000
+normal,giemsa,171,0.6875,0.6526,-0.0349
+normal,gram,75,0.5366,0.5556,0.0190
+normal,h&e,4862,0.8960,0.8987,0.0026
+normal,immunofluorescence,152,0.8451,0.8451,0.0000
+normal,immunostaining,2524,0.8673,0.8701,0.0028
+normal,laryngoscopy,37,0.1538,0.6667,0.5128
+normal,masson_trichrome,108,0.5660,0.5660,0.0000
+normal,methenamine_silver,117,0.2353,0.7143,0.4790
+normal,methylene_blue,25,0.0000,0.0000,0.0000
+normal,mri + angiography,137,0.2041,0.2264,0.0223
+normal,mri + not_angiography,10794,0.9485,0.9501,0.0016
+normal,other_ultrasound + angiography,18,0.0000,0.2222,0.2222
+normal,other_ultrasound + not_angiography,1949,0.8413,0.8517,0.0104
+normal,papanicolaou,102,0.6552,0.6316,-0.0236
+normal,pas,258,0.4272,0.3925,-0.0347
+normal,van_gieson,46,0.1429,0.2000,0.0571
+normal,x_ray + angiography,29,0.1333,0.0000,-0.1333
+normal,x_ray + not_angiography,5566,0.9374,0.9414,0.0040
+optimized,acid_fast,46,0.5000,0.6316,0.1316
+optimized,alcian_blue,25,0.4000,0.4444,0.0444
+optimized,arthroscopy,57,0.5625,0.6923,0.1298
+optimized,broncoscopy,220,0.7069,0.6481,-0.0587
+optimized,colonoscopy,223,0.6080,0.6372,0.0292
+optimized,congo_red,50,0.3000,0.2222,-0.0778
+optimized,ct + angiography,404,0.1712,0.2176,0.0464
+optimized,ct + not_angiography,14873,0.9297,0.9243,-0.0054
+optimized,cystoscopy,48,0.3704,0.5000,0.1296
+optimized,echocardiogram + angiography,21,0.0000,0.0000,0.0000
+optimized,echocardiogram + not_angiography,1186,0.8784,0.8918,0.0134
+optimized,egd,112,0.4528,0.4255,-0.0273
+optimized,fish,165,0.6486,0.6486,0.0000
+optimized,gastroscopy,41,0.1000,0.1429,0.0429
+optimized,giemsa,171,0.6517,0.6526,0.0009
+optimized,gram,75,0.3077,0.5556,0.2479
+optimized,h&e,4862,0.8820,0.8987,0.0167
+optimized,immunofluorescence,152,0.8333,0.8451,0.0117
+optimized,immunostaining,2524,0.8524,0.8701,0.0176
+optimized,laryngoscopy,37,0.3704,0.5263,0.1559
+optimized,masson_trichrome,108,0.5714,0.5660,-0.0054
+optimized,methenamine_silver,117,0.6176,0.7143,0.0966
+optimized,methylene_blue,25,0.2500,0.0000,-0.2500
+optimized,mri + angiography,137,0.2400,0.2615,0.0215
+optimized,mri + not_angiography,10794,0.9348,0.9150,-0.0198
+optimized,other_ultrasound + angiography,18,0.0000,0.4000,0.4000
+optimized,other_ultrasound + not_angiography,1949,0.8395,0.8301,-0.0094
+optimized,papanicolaou,102,0.6316,0.6316,0.0000
+optimized,pas,258,0.3934,0.3925,-0.0009
+optimized,van_gieson,46,0.2143,0.2000,-0.0143
+optimized,x_ray + angiography,29,0.0000,0.0952,0.0952
+optimized,x_ray + not_angiography,5566,0.9213,0.9243,0.0030

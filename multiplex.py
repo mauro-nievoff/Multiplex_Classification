@@ -53,7 +53,7 @@ class MultiplexOntologyProcessor():
       self.onto_dicts = self._create_ontology_dicts()
       self._create_output_ontology()
     else:
-      error_message = ''
+      error_message = 'The ontology errors below were identified. If you used different ontologies in the same runtime, try restarting the session before debugging the input owl file.\n'
       for key in self.ontology_errors.keys():
         if self.ontology_errors[key]:
           error_message += self.ontology_errors[key] + '\n'

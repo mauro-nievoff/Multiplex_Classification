@@ -1,0 +1,444 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xml:base="http://multiplex_example.org/my_ontology.owl"
+         xmlns="http://multiplex_example.org/my_ontology.owl#">
+
+<owl:Ontology rdf:about="http://multiplex_example.org/my_ontology.owl"/>
+
+<owl:AnnotationProperty rdf:about="#tree_name"/>
+
+<owl:AnnotationProperty rdf:about="#class_path"/>
+
+<owl:AnnotationProperty rdf:about="#associated_compound_classes"/>
+
+<owl:AnnotationProperty rdf:about="#preprocessed_from"/>
+
+<owl:AnnotationProperty rdf:about="#readme"/>
+
+<owl:AnnotationProperty rdf:about="#date"/>
+
+<owl:AnnotationProperty rdf:about="#ontology_comment"/>
+
+<owl:Class rdf:about="#_any_instance">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:unionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#radiology"/>
+        <rdf:Description rdf:about="#endoscopy"/>
+        <rdf:Description rdf:about="#pathology"/>
+      </owl:unionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <readme rdf:datatype="http://www.w3.org/2001/XMLSchema#string">This is ontology was created using the Multiplex Classification Framework. The structure of the ontology is hierarchical, where all classes are grouped into disjoint unions, except for the root class (_any_instance).
+
+Meaning of class annotations:
+- class_path: String with a unique identifier used in the original file, which includes the information about all the ascendent classes from the given class together with their corresponding trees. ':' is used to separate a tree and its classes, '.' is used to separate a class from its subclass, and '~' is used to separate a class and its subsidiary tree.
+- associated_compound_classes: List of compound classes associated with the given class ('_none' is the default value if there is no associated class). An instance belongs to a given associated class if it belongs to all the classes that have such class under this data field. For example, if the classes 'heart' and 'ultrasound' have the associated class 'echocardiogram', then any instance that belongs both to 'heart' and 'ultrasound' should be classified also as 'echocardiogram'.
+- preprocessed_from: List of all the classes present in the initial ontology, that were merged into the given class during preprocessing ('_none' by default). For example, if the class 'ct_scan' has 'ct' and 'computed_tomography' as 'preprocessed_from', it means that the original ontology included such classes, and their names were merged into 'ct_scan' (which may also have been present originally).
+- tree_name: This ontology was created from a file including different class trees. This field refers to the tree_name present in such original file.</readme>
+  <date rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024-09-07</date>
+  <ontology_comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">No additional comment.</ontology_comment>
+</owl:Class>
+
+<owl:Class rdf:about="#radiology">
+  <rdfs:subClassOf rdf:resource="#_any_instance"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:unionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#angiography"/>
+        <rdf:Description rdf:about="#no_angiography"/>
+      </owl:unionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:unionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#ct"/>
+        <rdf:Description rdf:about="#ultrasound"/>
+        <rdf:Description rdf:about="#mri"/>
+        <rdf:Description rdf:about="#x_ray"/>
+      </owl:unionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:radiology</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#endoscopy">
+  <rdfs:subClassOf rdf:resource="#_any_instance"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:unionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#gastroscopy"/>
+        <rdf:Description rdf:about="#cystoscopy"/>
+        <rdf:Description rdf:about="#egd"/>
+        <rdf:Description rdf:about="#laryngoscopy"/>
+        <rdf:Description rdf:about="#colonoscopy"/>
+        <rdf:Description rdf:about="#broncoscopy"/>
+        <rdf:Description rdf:about="#arthroscopy"/>
+      </owl:unionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:endoscopy</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">endoscopic</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#pathology">
+  <rdfs:subClassOf rdf:resource="#_any_instance"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:unionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#immunostaining"/>
+        <rdf:Description rdf:about="#h&amp;e"/>
+        <rdf:Description rdf:about="#other_staining"/>
+      </owl:unionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:pathology</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#ct">
+  <rdfs:subClassOf rdf:resource="#radiology"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:radiology.ct</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cta</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cta</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#ultrasound">
+  <rdfs:subClassOf rdf:resource="#radiology"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:unionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#other_ultrasound"/>
+        <rdf:Description rdf:about="#echocardiogram"/>
+      </owl:unionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:radiology.ultrasound</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#mri">
+  <rdfs:subClassOf rdf:resource="#radiology"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:radiology.mri</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mra</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mra</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#x_ray">
+  <rdfs:subClassOf rdf:resource="#radiology"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:radiology.x_ray</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#gastroscopy">
+  <rdfs:subClassOf rdf:resource="#endoscopy"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:endoscopy.gastroscopy</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#cystoscopy">
+  <rdfs:subClassOf rdf:resource="#endoscopy"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:endoscopy.cystoscopy</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#egd">
+  <rdfs:subClassOf rdf:resource="#endoscopy"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:endoscopy.egd</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#laryngoscopy">
+  <rdfs:subClassOf rdf:resource="#endoscopy"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:endoscopy.laryngoscopy</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#colonoscopy">
+  <rdfs:subClassOf rdf:resource="#endoscopy"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:endoscopy.colonoscopy</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#broncoscopy">
+  <rdfs:subClassOf rdf:resource="#endoscopy"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:endoscopy.broncoscopy</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#arthroscopy">
+  <rdfs:subClassOf rdf:resource="#endoscopy"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:endoscopy.arthroscopy</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#immunostaining">
+  <rdfs:subClassOf rdf:resource="#pathology"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:pathology.immunostaining</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ihc</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#h&amp;e">
+  <rdfs:subClassOf rdf:resource="#pathology"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:pathology.h&amp;e</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#other_staining">
+  <rdfs:subClassOf rdf:resource="#pathology"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:unionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#pas"/>
+        <rdf:Description rdf:about="#congo_red"/>
+        <rdf:Description rdf:about="#giemsa"/>
+        <rdf:Description rdf:about="#masson_trichrome"/>
+        <rdf:Description rdf:about="#methenamine_silver"/>
+        <rdf:Description rdf:about="#fish"/>
+        <rdf:Description rdf:about="#papanicolaou"/>
+        <rdf:Description rdf:about="#gram"/>
+        <rdf:Description rdf:about="#immunofluorescence"/>
+        <rdf:Description rdf:about="#alcian_blue"/>
+        <rdf:Description rdf:about="#acid_fast"/>
+        <rdf:Description rdf:about="#methylene_blue"/>
+        <rdf:Description rdf:about="#van_gieson"/>
+      </owl:unionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:pathology.other_staining</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#angiography">
+  <rdfs:subClassOf rdf:resource="#radiology"/>
+  <owl:disjointWith rdf:resource="#no_angiography"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">attribute_angiography</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:radiology~attribute_angiography:angiography</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mra, cta</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mra, dsa, venogram, cta</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#no_angiography">
+  <rdfs:subClassOf rdf:resource="#radiology"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">attribute_angiography</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:radiology~attribute_angiography:no_angiography</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#other_ultrasound">
+  <rdfs:subClassOf rdf:resource="#ultrasound"/>
+  <owl:disjointWith rdf:resource="#echocardiogram"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:radiology.ultrasound.other_ultrasound</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#echocardiogram">
+  <rdfs:subClassOf rdf:resource="#ultrasound"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:radiology.ultrasound.echocardiogram</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#pas">
+  <rdfs:subClassOf rdf:resource="#other_staining"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:pathology.other_staining.pas</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#congo_red">
+  <rdfs:subClassOf rdf:resource="#other_staining"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:pathology.other_staining.congo_red</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#giemsa">
+  <rdfs:subClassOf rdf:resource="#other_staining"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:pathology.other_staining.giemsa</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#masson_trichrome">
+  <rdfs:subClassOf rdf:resource="#other_staining"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:pathology.other_staining.masson_trichrome</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#methenamine_silver">
+  <rdfs:subClassOf rdf:resource="#other_staining"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:pathology.other_staining.methenamine_silver</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#fish">
+  <rdfs:subClassOf rdf:resource="#other_staining"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:pathology.other_staining.fish</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#papanicolaou">
+  <rdfs:subClassOf rdf:resource="#other_staining"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:pathology.other_staining.papanicolaou</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#gram">
+  <rdfs:subClassOf rdf:resource="#other_staining"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:pathology.other_staining.gram</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#immunofluorescence">
+  <rdfs:subClassOf rdf:resource="#other_staining"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:pathology.other_staining.immunofluorescence</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#alcian_blue">
+  <rdfs:subClassOf rdf:resource="#other_staining"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:pathology.other_staining.alcian_blue</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#acid_fast">
+  <rdfs:subClassOf rdf:resource="#other_staining"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:pathology.other_staining.acid_fast</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ziehl_neelsen</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#methylene_blue">
+  <rdfs:subClassOf rdf:resource="#other_staining"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:pathology.other_staining.methylene_blue</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#van_gieson">
+  <rdfs:subClassOf rdf:resource="#other_staining"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">imaging_type:pathology.other_staining.van_gieson</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#ct"/>
+    <rdf:Description rdf:about="#ultrasound"/>
+    <rdf:Description rdf:about="#mri"/>
+    <rdf:Description rdf:about="#x_ray"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#immunostaining"/>
+    <rdf:Description rdf:about="#h&amp;e"/>
+    <rdf:Description rdf:about="#other_staining"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#pas"/>
+    <rdf:Description rdf:about="#congo_red"/>
+    <rdf:Description rdf:about="#giemsa"/>
+    <rdf:Description rdf:about="#masson_trichrome"/>
+    <rdf:Description rdf:about="#methenamine_silver"/>
+    <rdf:Description rdf:about="#fish"/>
+    <rdf:Description rdf:about="#papanicolaou"/>
+    <rdf:Description rdf:about="#gram"/>
+    <rdf:Description rdf:about="#immunofluorescence"/>
+    <rdf:Description rdf:about="#alcian_blue"/>
+    <rdf:Description rdf:about="#acid_fast"/>
+    <rdf:Description rdf:about="#methylene_blue"/>
+    <rdf:Description rdf:about="#van_gieson"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#gastroscopy"/>
+    <rdf:Description rdf:about="#cystoscopy"/>
+    <rdf:Description rdf:about="#egd"/>
+    <rdf:Description rdf:about="#laryngoscopy"/>
+    <rdf:Description rdf:about="#colonoscopy"/>
+    <rdf:Description rdf:about="#broncoscopy"/>
+    <rdf:Description rdf:about="#arthroscopy"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#radiology"/>
+    <rdf:Description rdf:about="#endoscopy"/>
+    <rdf:Description rdf:about="#pathology"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+
+</rdf:RDF>

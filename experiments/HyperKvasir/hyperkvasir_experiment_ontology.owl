@@ -1,0 +1,251 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xml:base="http://multiplex_example.org/my_ontology.owl"
+         xmlns="http://multiplex_example.org/my_ontology.owl#">
+
+<owl:Ontology rdf:about="http://multiplex_example.org/my_ontology.owl"/>
+
+<owl:AnnotationProperty rdf:about="#tree_name"/>
+
+<owl:AnnotationProperty rdf:about="#class_path"/>
+
+<owl:AnnotationProperty rdf:about="#associated_compound_classes"/>
+
+<owl:AnnotationProperty rdf:about="#preprocessed_from"/>
+
+<owl:AnnotationProperty rdf:about="#readme"/>
+
+<owl:AnnotationProperty rdf:about="#date"/>
+
+<owl:AnnotationProperty rdf:about="#ontology_comment"/>
+
+<owl:Class rdf:about="#_any_instance">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:unionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#lower_gi"/>
+        <rdf:Description rdf:about="#upper_gi"/>
+      </owl:unionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <readme rdf:datatype="http://www.w3.org/2001/XMLSchema#string">This is ontology was created using the Multiplex Classification Framework. The structure of the ontology is hierarchical, where all classes are grouped into disjoint unions, except for the root class (_any_instance).
+
+Meaning of class annotations:
+- class_path: String with a unique identifier used in the original file, which includes the information about all the ascendent classes from the given class together with their corresponding trees. ':' is used to separate a tree and its classes, '.' is used to separate a class from its subclass, and '~' is used to separate a class and its subsidiary tree.
+- associated_compound_classes: List of compound classes associated with the given class ('_none' is the default value if there is no associated class). An instance belongs to a given associated class if it belongs to all the classes that have such class under this data field. For example, if the classes 'heart' and 'ultrasound' have the associated class 'echocardiogram', then any instance that belongs both to 'heart' and 'ultrasound' should be classified also as 'echocardiogram'.
+- preprocessed_from: List of all the classes present in the initial ontology, that were merged into the given class during preprocessing ('_none' by default). For example, if the class 'ct_scan' has 'ct' and 'computed_tomography' as 'preprocessed_from', it means that the original ontology included such classes, and their names were merged into 'ct_scan' (which may also have been present originally).
+- tree_name: This ontology was created from a file including different class trees. This field refers to the tree_name present in such original file.</readme>
+  <date rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024-09-07</date>
+  <ontology_comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">No additional comment.</ontology_comment>
+</owl:Class>
+
+<owl:Class rdf:about="#lower_gi">
+  <rdfs:subClassOf rdf:resource="#_any_instance"/>
+  <owl:disjointWith rdf:resource="#upper_gi"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:unionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#hemorrhoids"/>
+        <rdf:Description rdf:about="#ulcerative_colitis"/>
+        <rdf:Description rdf:about="#polyps"/>
+      </owl:unionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings:lower_gi</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lower GI</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#upper_gi">
+  <rdfs:subClassOf rdf:resource="#_any_instance"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:unionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#esophagitis"/>
+        <rdf:Description rdf:about="#barrets_unspecific"/>
+      </owl:unionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings:upper_gi</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Upper GI</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#hemorrhoids">
+  <rdfs:subClassOf rdf:resource="#lower_gi"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings:lower_gi.hemorrhoids</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#ulcerative_colitis">
+  <rdfs:subClassOf rdf:resource="#lower_gi"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:unionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#ulcerative_colitis_grade_2_3"/>
+        <rdf:Description rdf:about="#ulcerative_colitis_grade_2"/>
+        <rdf:Description rdf:about="#ulcerative_colitis_grade_0_1"/>
+        <rdf:Description rdf:about="#ulcerative_colitis_grade_1"/>
+        <rdf:Description rdf:about="#ulcerative_colitis_grade_1_2"/>
+        <rdf:Description rdf:about="#ulcerative_colitis_grade_3"/>
+      </owl:unionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings:lower_gi.ulcerative_colitis</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ulcerative-colitis</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#polyps">
+  <rdfs:subClassOf rdf:resource="#lower_gi"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings:lower_gi.polyps</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#esophagitis">
+  <rdfs:subClassOf rdf:resource="#upper_gi"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:unionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#esophagitis_a"/>
+        <rdf:Description rdf:about="#esophagitis_b_d"/>
+      </owl:unionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <owl:disjointWith rdf:resource="#barrets_unspecific"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings:upper_gi.esophagitis</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#barrets_unspecific">
+  <rdfs:subClassOf rdf:resource="#upper_gi"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:unionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#barretts_short_segment"/>
+        <rdf:Description rdf:about="#barretts_long_segment"/>
+      </owl:unionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings:upper_gi.barrets_unspecific</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">barrets-unspecific</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#ulcerative_colitis_grade_2_3">
+  <rdfs:subClassOf rdf:resource="#ulcerative_colitis"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings:lower_gi.ulcerative_colitis.ulcerative_colitis_grade_2_3</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ulcerative-colitis-grade-2-3</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#ulcerative_colitis_grade_2">
+  <rdfs:subClassOf rdf:resource="#ulcerative_colitis"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings:lower_gi.ulcerative_colitis.ulcerative_colitis_grade_2</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ulcerative-colitis-grade-2</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#ulcerative_colitis_grade_0_1">
+  <rdfs:subClassOf rdf:resource="#ulcerative_colitis"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings:lower_gi.ulcerative_colitis.ulcerative_colitis_grade_0_1</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ulcerative-colitis-grade-0-1</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#ulcerative_colitis_grade_1">
+  <rdfs:subClassOf rdf:resource="#ulcerative_colitis"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings:lower_gi.ulcerative_colitis.ulcerative_colitis_grade_1</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ulcerative-colitis-grade-1</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#ulcerative_colitis_grade_1_2">
+  <rdfs:subClassOf rdf:resource="#ulcerative_colitis"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings:lower_gi.ulcerative_colitis.ulcerative_colitis_grade_1_2</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ulcerative-colitis-grade-1-2</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#ulcerative_colitis_grade_3">
+  <rdfs:subClassOf rdf:resource="#ulcerative_colitis"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings:lower_gi.ulcerative_colitis.ulcerative_colitis_grade_3</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ulcerative-colitis-grade-3</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#esophagitis_a">
+  <rdfs:subClassOf rdf:resource="#esophagitis"/>
+  <owl:disjointWith rdf:resource="#esophagitis_b_d"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings:upper_gi.esophagitis.esophagitis_a</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">esophagitis-a</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#esophagitis_b_d">
+  <rdfs:subClassOf rdf:resource="#esophagitis"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings:upper_gi.esophagitis.esophagitis_b_d</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">esophagitis-b-d</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#barretts_short_segment">
+  <rdfs:subClassOf rdf:resource="#barrets_unspecific"/>
+  <owl:disjointWith rdf:resource="#barretts_long_segment"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings:upper_gi.barrets_unspecific.barretts_short_segment</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">barrets-short-segment</preprocessed_from>
+</owl:Class>
+
+<owl:Class rdf:about="#barretts_long_segment">
+  <rdfs:subClassOf rdf:resource="#barrets_unspecific"/>
+  <tree_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings</tree_name>
+  <class_path rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pathological-findings:upper_gi.barrets_unspecific.barretts_long_segment</class_path>
+  <associated_compound_classes rdf:datatype="http://www.w3.org/2001/XMLSchema#string">_none</associated_compound_classes>
+  <preprocessed_from rdf:datatype="http://www.w3.org/2001/XMLSchema#string">barrets</preprocessed_from>
+</owl:Class>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#ulcerative_colitis_grade_2_3"/>
+    <rdf:Description rdf:about="#ulcerative_colitis_grade_2"/>
+    <rdf:Description rdf:about="#ulcerative_colitis_grade_0_1"/>
+    <rdf:Description rdf:about="#ulcerative_colitis_grade_1"/>
+    <rdf:Description rdf:about="#ulcerative_colitis_grade_1_2"/>
+    <rdf:Description rdf:about="#ulcerative_colitis_grade_3"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#hemorrhoids"/>
+    <rdf:Description rdf:about="#ulcerative_colitis"/>
+    <rdf:Description rdf:about="#polyps"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+
+</rdf:RDF>

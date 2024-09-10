@@ -9,7 +9,7 @@ import numpy as np
 
 class MultiplexOntologyProcessor():
 
-  def __init__(self, input_owl_path, refresh_ontology = True, output_owl_path = 'my_ontology.owl', root_class = '_any_instance', additional_comment = 'No additional comment.'):
+  def __init__(self, input_owl_path, refresh_ontology = True, output_owl_path = 'my_ontology.owl', root_class = 'root_class', additional_comment = 'No additional comment.'):
 
     '''
     Parameters
@@ -23,7 +23,7 @@ class MultiplexOntologyProcessor():
     output_owl_path : str, default 'my_ontology.owl'
         Path to the ontology file.
 
-    root_class : str, default '_any_instance'
+    root_class : str, default 'root_class'
         Root class of the ontology.
 
     additional_comment : str, default 'No additional comment.'
@@ -473,7 +473,7 @@ Meaning of class annotations:
 class MultiplexDatasetProcessor():
 
   def __init__(self, input_owl_path, input_csv_path, input_label_column = 'label_list', output_csv_path = '', output_format = 'multiplex',
-               exclusion_classes = True, refresh_ontology = True, output_owl_path = 'my_ontology.owl', root_class = '_any_instance', additional_comment = 'No additional comment.'):
+               exclusion_classes = True, refresh_ontology = True, output_owl_path = 'my_ontology.owl', root_class = 'root_class', additional_comment = 'No additional comment.'):
 
     '''
     Parameters
@@ -508,7 +508,7 @@ class MultiplexDatasetProcessor():
     output_owl_path : str, default 'my_ontology.owl'
         Path to the ontology file.
 
-    root_class : str, default '_any_instance'
+    root_class : str, default 'root_class'
         Root class of the ontology.
 
     additional_comment : str, default 'No additional comment.'

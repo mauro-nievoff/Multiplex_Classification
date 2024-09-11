@@ -377,7 +377,7 @@ Meaning of class annotations:
 - preprocessed_from: List of all the classes present in the initial ontology, that were merged into the given class during preprocessing ('_none' by default). For example, if the class 'ct_scan' has 'ct' and 'computed_tomography' as 'preprocessed_from', it means that the original ontology included such classes, and their names were merged into 'ct_scan' (which may also have been present originally).
 - tree_name: This ontology was created from a file including different class trees. This field refers to the tree_name present in such original file.'''
 
-    sample_owl_path = "http://multiplex_example.org/my_ontology.owl"
+    sample_owl_path = "http://multiplex_example.org/my_ontology"
     self.output_onto = owlready2.get_ontology(sample_owl_path)
     # The ontology is destroyed and recreated, otherwise there can be errors if the notebook is ran multiple times.
     self.output_onto.destroy(update_relation = True, update_is_a = True)

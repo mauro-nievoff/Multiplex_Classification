@@ -22,7 +22,7 @@
 
 <owl:AnnotationProperty rdf:about="#taxonomy_comment"/>
 
-<owl:Class rdf:about="#_any_instance">
+<owl:Class rdf:about="#root_class">
   <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
   <owl:equivalentClass>
     <owl:Class>
@@ -33,7 +33,7 @@
       </owl:unionOf>
     </owl:Class>
   </owl:equivalentClass>
-  <readme rdf:datatype="http://www.w3.org/2001/XMLSchema#string">This is taxonomy was created using the Multiplex Classification Framework. The structure of the taxonomy is hierarchical, where all classes are grouped into disjoint unions, except for the root class (_any_instance).
+  <readme rdf:datatype="http://www.w3.org/2001/XMLSchema#string">This is taxonomy was created using the Multiplex Classification Framework. The structure of the taxonomy is hierarchical, where all classes are grouped into disjoint unions, except for the root class (root_class).
 
 Meaning of class annotations:
 - class_path: String with a unique identifier used in the original file, which includes the information about all the ascendent classes from the given class together with their corresponding trees. ':' is used to separate a tree and its classes, '.' is used to separate a class from its subclass, and '~' is used to separate a class and its subsidiary tree.
@@ -45,7 +45,7 @@ Meaning of class annotations:
 </owl:Class>
 
 <owl:Class rdf:about="#radiology">
-  <rdfs:subClassOf rdf:resource="#_any_instance"/>
+  <rdfs:subClassOf rdf:resource="#root_class"/>
   <owl:equivalentClass>
     <owl:Class>
       <owl:unionOf rdf:parseType="Collection">
@@ -71,7 +71,7 @@ Meaning of class annotations:
 </owl:Class>
 
 <owl:Class rdf:about="#endoscopy">
-  <rdfs:subClassOf rdf:resource="#_any_instance"/>
+  <rdfs:subClassOf rdf:resource="#root_class"/>
   <owl:equivalentClass>
     <owl:Class>
       <owl:unionOf rdf:parseType="Collection">
@@ -92,7 +92,7 @@ Meaning of class annotations:
 </owl:Class>
 
 <owl:Class rdf:about="#pathology">
-  <rdfs:subClassOf rdf:resource="#_any_instance"/>
+  <rdfs:subClassOf rdf:resource="#root_class"/>
   <owl:equivalentClass>
     <owl:Class>
       <owl:unionOf rdf:parseType="Collection">

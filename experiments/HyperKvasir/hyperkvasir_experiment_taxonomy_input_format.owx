@@ -419,7 +419,7 @@
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://webprotege.stanford.edu/R9Ub9GTu8LyXrlP5eZYGDjs</IRI>
-        <Literal>ontology</Literal>
+        <Literal>taxonomy</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>

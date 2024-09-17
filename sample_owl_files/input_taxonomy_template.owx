@@ -267,7 +267,7 @@
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://webprotege.stanford.edu/R2kzbs27MqM9Ncdwpx8cbZ</IRI>
-        <Literal>new_compound_class_not_from_original_ontology</Literal>
+        <Literal>new_compound_class_not_from_original_y</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
@@ -337,7 +337,7 @@
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://webprotege.stanford.edu/RBzrY9botPB59K8yTyUZ93e</IRI>
-        <Literal>ontology</Literal>
+        <Literal>y</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
@@ -387,7 +387,7 @@
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://webprotege.stanford.edu/RnUl6IP3TArf72sEwNc4nd</IRI>
-        <Literal>compound_class_from_original_ontology</Literal>
+        <Literal>compound_class_from_original_y</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>

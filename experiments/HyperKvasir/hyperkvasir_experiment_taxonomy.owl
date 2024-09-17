@@ -3,10 +3,10 @@
          xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
          xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
          xmlns:owl="http://www.w3.org/2002/07/owl#"
-         xml:base="http://multiplex_example.org/my_ontology.owl"
-         xmlns="http://multiplex_example.org/my_ontology.owl#">
+         xml:base="http://multiplex_example.org/my_taxonomy.owl"
+         xmlns="http://multiplex_example.org/my_taxonomy.owl#">
 
-<owl:Ontology rdf:about="http://multiplex_example.org/my_ontology.owl"/>
+<owl:Ontology rdf:about="http://multiplex_example.org/my_taxonomy.owl"/>
 
 <owl:AnnotationProperty rdf:about="#tree_name"/>
 
@@ -20,7 +20,7 @@
 
 <owl:AnnotationProperty rdf:about="#date"/>
 
-<owl:AnnotationProperty rdf:about="#ontology_comment"/>
+<owl:AnnotationProperty rdf:about="#taxonomy_comment"/>
 
 <owl:Class rdf:about="#_any_instance">
   <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
@@ -32,15 +32,15 @@
       </owl:unionOf>
     </owl:Class>
   </owl:equivalentClass>
-  <readme rdf:datatype="http://www.w3.org/2001/XMLSchema#string">This is ontology was created using the Multiplex Classification Framework. The structure of the ontology is hierarchical, where all classes are grouped into disjoint unions, except for the root class (_any_instance).
+  <readme rdf:datatype="http://www.w3.org/2001/XMLSchema#string">This is taxonomy was created using the Multiplex Classification Framework. The structure of the taxonomy is hierarchical, where all classes are grouped into disjoint unions, except for the root class (_any_instance).
 
 Meaning of class annotations:
 - class_path: String with a unique identifier used in the original file, which includes the information about all the ascendent classes from the given class together with their corresponding trees. ':' is used to separate a tree and its classes, '.' is used to separate a class from its subclass, and '~' is used to separate a class and its subsidiary tree.
 - associated_compound_classes: List of compound classes associated with the given class ('_none' is the default value if there is no associated class). An instance belongs to a given associated class if it belongs to all the classes that have such class under this data field. For example, if the classes 'heart' and 'ultrasound' have the associated class 'echocardiogram', then any instance that belongs both to 'heart' and 'ultrasound' should be classified also as 'echocardiogram'.
-- preprocessed_from: List of all the classes present in the initial ontology, that were merged into the given class during preprocessing ('_none' by default). For example, if the class 'ct_scan' has 'ct' and 'computed_tomography' as 'preprocessed_from', it means that the original ontology included such classes, and their names were merged into 'ct_scan' (which may also have been present originally).
-- tree_name: This ontology was created from a file including different class trees. This field refers to the tree_name present in such original file.</readme>
+- preprocessed_from: List of all the classes present in the initial taxonomy, that were merged into the given class during preprocessing ('_none' by default). For example, if the class 'ct_scan' has 'ct' and 'computed_tomography' as 'preprocessed_from', it means that the original taxonomy included such classes, and their names were merged into 'ct_scan' (which may also have been present originally).
+- tree_name: This taxonomy was created from a file including different class trees. This field refers to the tree_name present in such original file.</readme>
   <date rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024-09-07</date>
-  <ontology_comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">No additional comment.</ontology_comment>
+  <taxonomy_comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">No additional comment.</taxonomy_comment>
 </owl:Class>
 
 <owl:Class rdf:about="#lower_gi">

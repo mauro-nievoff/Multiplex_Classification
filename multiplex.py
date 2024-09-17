@@ -7,27 +7,27 @@ import re
 import ast
 import numpy as np
 
-class MultiplexOntologyProcessor():
+class MultiplexTaxonomyProcessor():
 
-  def __init__(self, input_owl_path, refresh_ontology = True, output_owl_path = 'my_ontology.owl', root_class = 'root_class', additional_comment = 'No additional comment.'):
+  def __init__(self, input_owl_path, refresh_ontology = True, output_owl_path = 'my_taxonomy.owl', root_class = 'root_class', additional_comment = 'No additional comment.'):
 
     '''
     Parameters
     ----------
     input_owl_path : str
-        Path to the ontology file.
+        Path to the input taxonomy file.
 
     refresh_ontology: bool, default True
-        When more than one ontology is used in the same runtime, previous uploaded ontologies need to be destroyed.
+        When more than one taxonomy is used in the same runtime, previous uploaded ontology objects need to be destroyed.
 
-    output_owl_path : str, default 'my_ontology.owl'
-        Path to the ontology file.
+    output_owl_path : str, default 'my_taxonomy.owl'
+        Path to the taxonomy file.
 
     root_class : str, default 'root_class'
-        Root class of the ontology.
+        Root class of the taxonomy.
 
     additional_comment : str, default 'No additional comment.'
-        Additional comment to be included in the output ontology file.
+        Additional comment to be included in the output taxonomy file.
 
     '''
 
@@ -35,36 +35,36 @@ class MultiplexOntologyProcessor():
     self.output_owl_path = output_owl_path
     self.root_class = root_class
     self.additional_comment = additional_comment
-    self.ontology_errors = {'single_child_class': False, 'repeated_class_name': False, 'graph_structure': False, 'recursive_relation': False, 'empty_trees': False}
-    self.rainforest_format_ontology = self._get_ontology()
+    self.taxonomy_errors = {'single_child_class': False, 'repeated_class_name': False, 'graph_structure': False, 'recursive_relation': False, 'empty_trees': False}
+    self.rainforest_format_taxonomy = self._get_taxonomy()
     if refresh_ontology:
       try:
         while True:
-          self.rainforest_format_ontology.destroy(update_relation = True, update_is_a = True)
+          self.rainforest_format_taxonomy.destroy(update_relation = True, update_is_a = True)
       except:
-        self.rainforest_format_ontology = self._get_ontology()
+        self.rainforest_format_taxonomy = self._get_taxonomy()
     self.class_map = self._create_class_map()
     try:
       self._find_class_with_multiple_parents()
     except RecursionError:
-      self.ontology_errors['recursive_relation'] = 'Cyclic Hierarchy. To fix this error, make sure that no subclass is an ancestor of its parent class.'
-    if all(not value for value in self.ontology_errors.values()):
+      self.taxonomy_errors['recursive_relation'] = 'Cyclic Hierarchy. To fix this error, make sure that no subclass is an ancestor of its parent class.'
+    if all(not value for value in self.taxonomy_errors.values()):
       self.preprocessing_mapping_dict = self._get_preprocessing_dict()
-      self.onto_dicts = self._create_ontology_dicts()
-      self._create_output_ontology()
+      self.onto_dicts = self._create_taxonomy_dicts()
+      self._create_output_taxonomy()
     else:
-      error_message = 'The ontology errors below were identified. If you used different ontologies in the same runtime, try restarting the session before debugging the input owl file.\n'
-      for key in self.ontology_errors.keys():
-        if self.ontology_errors[key]:
-          error_message += self.ontology_errors[key] + '\n'
+      error_message = 'The taxonomy errors below were identified. If you used different taxonomies in the same runtime, try restarting the session before debugging the input owl file.\n'
+      for key in self.taxonomy_errors.keys():
+        if self.taxonomy_errors[key]:
+          error_message += self.taxonomy_errors[key] + '\n'
 
-      class OntologyError(Exception):
+      class TaxonomyError(Exception):
         pass
-      raise OntologyError(error_message)
+      raise TaxonomyError(error_message)
 
-  ### Methods for Ontology Import
+  ### Methods for Taxonomy Import
 
-  def _get_ontology(self):
+  def _get_taxonomy(self):
 
     owlready2.onto_path = []
     owlready2.onto_path.append(self.input_owl_path)
@@ -99,7 +99,7 @@ class MultiplexOntologyProcessor():
         dct['subclasses'] = self._get_subclasses(child, subsidiary_relation, subsidiary_tree_dict, dct['class_path'])['classes']
       except RecursionError:
         dct['subclasses'] = []
-        self.ontology_errors['recursive_relation'] = 'Cyclic Hierarchy. To fix this error, make sure that no subclass is an ancestor of its parent class.'
+        self.taxonomy_errors['recursive_relation'] = 'Cyclic Hierarchy. To fix this error, make sure that no subclass is an ancestor of its parent class.'
       lst.append(dct)
 
       if dct['subsidiary_trees']:
@@ -117,9 +117,9 @@ class MultiplexOntologyProcessor():
       if cls.get('subclasses'):
         self._extract_classes(cls['subclasses'], flat_dict)
 
-  def _find_ontology_errors(self, data):
+  def _find_taxonomy_errors(self, data):
 
-    '''Method used to identify two types of ontology errors: Parent classes with only one child class, and two classes with the same name.'''
+    '''Method used to identify two types of taxonomy errors: Parent classes with only one child class, and two classes with the same name.'''
 
     subclasses_with_len_1 = []
     class_names = []
@@ -145,22 +145,22 @@ class MultiplexOntologyProcessor():
     try:
       recurse(data)
     except RecursionError:
-      self.ontology_errors['recursive_relation'] = 'Cyclic Hierarchy. To fix this error, make sure that no subclass is an ancestor of its parent class.'
+      self.taxonomy_errors['recursive_relation'] = 'Cyclic Hierarchy. To fix this error, make sure that no subclass is an ancestor of its parent class.'
 
     repeated_class_names = [name for name, count in class_name_counts.items() if count > 1]
 
     if subclasses_with_len_1:
-      self.ontology_errors['single_child_class'] = 'Single Child Class: ' + ', '.join(list(set([d['class_name'] for d in subclasses_with_len_1]))) + '. To fix this error, remove any single child class or add the corresponding siblings.'
+      self.taxonomy_errors['single_child_class'] = 'Single Child Class: ' + ', '.join(list(set([d['class_name'] for d in subclasses_with_len_1]))) + '. To fix this error, remove any single child class or add the corresponding siblings.'
     if repeated_class_names:
-      self.ontology_errors['repeated_class_name'] = 'Repeated Class Name: ' + ', '.join(repeated_class_names) + '. To fix this error, rename the corresponding class to avoid class name repetition.'
+      self.taxonomy_errors['repeated_class_name'] = 'Repeated Class Name: ' + ', '.join(repeated_class_names) + '. To fix this error, rename the corresponding class to avoid class name repetition.'
 
   def _get_postprocessing_map(self):
 
     '''This method is used to get compound classes (aka pseudo classes), which are classes that are not used to train machine learning models,
     they are added during postprocessing if combinations of other classes are present.'''
 
-    posprocessing_class = self.rainforest_format_ontology.search_one(label='postprocessing')
-    composition_relation = self.rainforest_format_ontology.search_one(label="is_composed_by")
+    posprocessing_class = self.rainforest_format_taxonomy.search_one(label='postprocessing')
+    composition_relation = self.rainforest_format_taxonomy.search_one(label="is_composed_by")
 
     if posprocessing_class and composition_relation:
       children = list(posprocessing_class.subclasses())
@@ -203,7 +203,7 @@ class MultiplexOntologyProcessor():
         seen.add(item)
 
     if repeated:
-      self.ontology_errors['graph_structure'] = 'Wrong Ontology Structure. Classes with multiple parents: ' + ', '.join(repeated) + '. To fix this error, make sure that each class has only one parent class.'
+      self.taxonomy_errors['graph_structure'] = 'Wrong Taxonomy Structure. Classes with multiple parents: ' + ', '.join(repeated) + '. To fix this error, make sure that each class has only one parent class.'
 
   def _create_class_map(self):
 
@@ -212,17 +212,17 @@ class MultiplexOntologyProcessor():
     For example, the path 'main_tree:class_1.class_1_4~subsidiary_tree:class_c' (for class 'class_c') means that class_c belongs to subsidiary_tree,
     which is an subsidiary tree from class_1_4, which is a child from class_1, which belongs to main_tree.'''
 
-    subsidiary_relation = self.rainforest_format_ontology.search_one(label="has_subsidiary_tree")
+    subsidiary_relation = self.rainforest_format_taxonomy.search_one(label="has_subsidiary_tree")
 
     self.class_trees = []
-    for tree in list(self.rainforest_format_ontology.search_one(label='ontology').subclasses()):
+    for tree in list(self.rainforest_format_taxonomy.search_one(label='taxonomy').subclasses()):
       tree_subclasses = self._get_subclasses(tree, subsidiary_relation)
       self.class_trees.append(tree_subclasses)
       if tree_subclasses['classes'] == []:
-        self.ontology_errors['empty_trees'] = f"Empty Class Tree: {tree_subclasses['tree_name']}"
+        self.taxonomy_errors['empty_trees'] = f"Empty Class Tree: {tree_subclasses['tree_name']}"
       elif len(tree_subclasses['classes']) == 1: # Added in case the only-child class is the first class from the tree.
-        self.ontology_errors['single_child_class'] = 'Single Child Class: ' + tree_subclasses['classes'][0]['class_name'] + '. To fix this error, remove any single child class or add the corresponding siblings.'
-      self._find_ontology_errors(tree_subclasses)
+        self.taxonomy_errors['single_child_class'] = 'Single Child Class: ' + tree_subclasses['classes'][0]['class_name'] + '. To fix this error, remove any single child class or add the corresponding siblings.'
+      self._find_taxonomy_errors(tree_subclasses)
 
     subsidiary_trees = {k:v for ct in self.class_trees for k, v in ct['subsidiary_trees'].items() if ct['subsidiary_trees']}
 
@@ -286,8 +286,8 @@ class MultiplexOntologyProcessor():
 
     '''This method is used to create a dictionary for preprocessing.'''
 
-    preprocessing_class = self.rainforest_format_ontology.search_one(label='preprocessing')
-    maps_to_relation = self.rainforest_format_ontology.search_one(label="maps_to")
+    preprocessing_class = self.rainforest_format_taxonomy.search_one(label='preprocessing')
+    maps_to_relation = self.rainforest_format_taxonomy.search_one(label="maps_to")
 
     if preprocessing_class and maps_to_relation:
       children = list(preprocessing_class.subclasses())
@@ -308,7 +308,7 @@ class MultiplexOntologyProcessor():
 
   def _adapt_preprocessing_dict(self):
 
-    '''This method is used to adapt the preprocessing dictionary so that it can be used for self._create_ontology_dict().'''
+    '''This method is used to adapt the preprocessing dictionary so that it can be used for self._create_taxonomy_dict().'''
 
     preprocessing_dict = {}
     for key in self.preprocessing_mapping_dict.keys():
@@ -321,7 +321,7 @@ class MultiplexOntologyProcessor():
 
   def _adapt_postprocessing_dict(self):
 
-    '''This method is used to adapt the postprocessing dictionary so that it can be used for self._create_ontology_dict().'''
+    '''This method is used to adapt the postprocessing dictionary so that it can be used for self._create_taxonomy_dict().'''
 
     initial_dicts_df = self.class_map[self.class_map['class_path'].str.startswith('postprocessing:')].apply(lambda x: {cls:x['class_name'] for cls in x['class_path'].split(':')[-1].split('+')}, axis = 1)
     if not initial_dicts_df.empty:
@@ -350,7 +350,7 @@ class MultiplexOntologyProcessor():
       parent_class = self.root_class
     return parent_class
 
-  def _create_ontology_dicts(self):
+  def _create_taxonomy_dicts(self):
 
     '''This method is used to create the dicts with all the necessary information to generate the new owl file.'''
 
@@ -363,27 +363,27 @@ class MultiplexOntologyProcessor():
     classes.loc[:, 'preprocessed_from'] = classes['class_name'].apply(lambda x: ', '.join(preprocessing_dict[x]) if x in preprocessing_dict.keys() else '')
     return classes.apply(lambda x: {'class_name': x['class_name'], 'tree_name': x['tree_name'], 'parent_class': x['parent_class'], 'class_path': x['class_path'], 'associated_compound_classes': x['associated_compound_classes'], 'preprocessed_from': x['preprocessed_from']}, axis = 1).tolist()
 
-  ### Methods for Creating the New Ontology
+  ### Methods for Creating the New Taxonomy
 
-  def _create_output_ontology(self):
+  def _create_output_taxonomy(self):
 
     '''This method is used to generate the new owl file.'''
 
-    readme_message = f'''This is ontology was created using the Multiplex Classification Framework. The structure of the ontology is hierarchical, where all classes are grouped into disjoint unions, except for the root class ({self.root_class}).
+    readme_message = f'''This is taxonomy was created using the Multiplex Classification Framework. The structure of the taxonomy is hierarchical, where all classes are grouped into disjoint unions, except for the root class ({self.root_class}).
 
 Meaning of class annotations:
 - class_path: String with a unique identifier used in the original file, which includes the information about all the ascendent classes from the given class together with their corresponding trees. ':' is used to separate a tree and its classes, '.' is used to separate a class from its subclass, and '~' is used to separate a class and its subsidiary tree.
 - associated_compound_classes: List of compound classes associated with the given class ('_none' is the default value if there is no associated class). An instance belongs to a given associated class if it belongs to all the classes that have such class under this data field. For example, if the classes 'heart' and 'ultrasound' have the associated class 'echocardiogram', then any instance that belongs both to 'heart' and 'ultrasound' should be classified also as 'echocardiogram'.
-- preprocessed_from: List of all the classes present in the initial ontology, that were merged into the given class during preprocessing ('_none' by default). For example, if the class 'ct_scan' has 'ct' and 'computed_tomography' as 'preprocessed_from', it means that the original ontology included such classes, and their names were merged into 'ct_scan' (which may also have been present originally).
-- tree_name: This ontology was created from a file including different class trees. This field refers to the tree_name present in such original file.'''
+- preprocessed_from: List of all the classes present in the initial taxonomy, that were merged into the given class during preprocessing ('_none' by default). For example, if the class 'ct_scan' has 'ct' and 'computed_tomography' as 'preprocessed_from', it means that the original taxonomy included such classes, and their names were merged into 'ct_scan' (which may also have been present originally).
+- tree_name: This taxonomy was created from a file including different class trees. This field refers to the tree_name present in such original file.'''
 
-    sample_owl_path = "http://multiplex_example.org/my_ontology"
+    sample_owl_path = "http://multiplex_example.org/my_taxonomy"
     self.output_onto = owlready2.get_ontology(sample_owl_path)
     # The ontology is destroyed and recreated, otherwise there can be errors if the notebook is ran multiple times.
     self.output_onto.destroy(update_relation = True, update_is_a = True)
     self.output_onto = owlready2.get_ontology(sample_owl_path)
 
-    # Ontology Properties are created.
+    # Properties are created in the OWL file.
 
     with self.output_onto:
         class tree_name(AnnotationProperty):
@@ -404,7 +404,7 @@ Meaning of class annotations:
         class date(AnnotationProperty):
             pass
 
-        class ontology_comment(AnnotationProperty):
+        class taxonomy_comment(AnnotationProperty):
             pass
 
     # The class tree is created. Metadata information is included in the root class. The Thing class is not used as root class because any union assigned to it by using equivalent_to is not reflected in the output owl file.
@@ -414,7 +414,7 @@ Meaning of class annotations:
       created_classes[self.root_class] = types.new_class(self.root_class, (Thing,))
       created_classes[self.root_class].readme = readme_message
       created_classes[self.root_class].date = str(datetime.date.today())
-      created_classes[self.root_class].ontology_comment = self.additional_comment
+      created_classes[self.root_class].taxonomy_comment = self.additional_comment
       previous_classes = [{'class_name': self.root_class, 'parent_class': '', 'tree_name': '', 'associated_compound_classes': '', 'preprocessed_from': ''}]
       while True:
         new_classes = []
@@ -466,20 +466,20 @@ Meaning of class annotations:
 
         parent_class.equivalent_to.append(union_expression)
 
-    # The ontology is saved.
+    # The taxonomy is saved.
 
     self.output_onto.save(self.output_owl_path)
 
 class MultiplexDatasetProcessor():
 
   def __init__(self, input_owl_path, input_csv_path, input_label_column = 'label_list', output_csv_path = '', output_format = 'multiplex',
-               exclusion_classes = True, refresh_ontology = True, output_owl_path = 'my_ontology.owl', root_class = 'root_class', additional_comment = 'No additional comment.'):
+               exclusion_classes = True, refresh_ontology = True, output_owl_path = 'my_taxonomy.owl', root_class = 'root_class', additional_comment = 'No additional comment.'):
 
     '''
     Parameters
     ----------
     input_owl_path : str
-        Path to the ontology file.
+        Path to the taxonomy file.
 
     input_csv_path : str
         Path to the input dataset file.
@@ -503,20 +503,20 @@ class MultiplexDatasetProcessor():
         If True, any label called 'exclusion_class' or any class that starts with 'no_' or 'other_' will be considered to be an exclusion class.
 
     refresh_ontology: bool, default True
-        When more than one ontology is used in the same runtime, previous uploaded ontologies need to be destroyed.
+        When more than one taxonomy is used in the same runtime, previous uploaded ontology objects need to be destroyed.
 
-    output_owl_path : str, default 'my_ontology.owl'
-        Path to the ontology file.
+    output_owl_path : str, default 'my_taxonomy.owl'
+        Path to the taxonomy file.
 
     root_class : str, default 'root_class'
-        Root class of the ontology.
+        Root class of the taxonomy.
 
     additional_comment : str, default 'No additional comment.'
-        Additional comment to be included in the output ontology file.
+        Additional comment to be included in the output taxonomy file.
 
     '''
 
-    self.mop = MultiplexOntologyProcessor(input_owl_path = input_owl_path, output_owl_path = output_owl_path, root_class = root_class, additional_comment = additional_comment, refresh_ontology = refresh_ontology)
+    self.mtp = MultiplexTaxonomyProcessor(input_owl_path = input_owl_path, output_owl_path = output_owl_path, root_class = root_class, additional_comment = additional_comment, refresh_ontology = refresh_ontology)
     self.input_csv_path = input_csv_path
     self.input_label_column = input_label_column
     if output_csv_path:

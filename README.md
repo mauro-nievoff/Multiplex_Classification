@@ -4,10 +4,11 @@ Classification is a fundamental task in machine learning. While conventional met
 ## Key Features
 The **Multiplex Classification Framework** offers several advantages:
 
+- Performance Improvement: Our experimental results demonstrate significant performance improvements, especially in cases with a large number of classes and class imbalances.
 - Scalable: Supports any number of classes and logical constraints.
 - Class Imbalance Handling: Provides an innovative method to manage class imbalance through task splitting.
 - No Confidence Thresholds: Eliminates the need for confidence threshold selection (inherent in multi-label classification).
-- Modular Structure: Allows independent fine-tuning of classification submodels.
+- Modular Structure: Allows independent fine-tuning of the classification models included in the ensemble.
 - Data Quality Improvement: Removes incompatible labels without requiring data review, enhancing data quality—especially useful for silver-standard datasets.
 
 The framework is particularly effective in scenarios with numerous classes and logical constraints, such as medical image classification, and supports both sequential and simultaneous classification tasks.
@@ -51,4 +52,10 @@ Then, the input dataset is turned into a Multiplex dataset, with one column per 
 In the process, labels are added or removed considering the logical constraints between classes. In this case, model_2 consists of a multi-task model.
 
 ### Model training
-Each model in the ensemble is trained independently (refer to the notebooks from the `experiment` folder for examples). This approach enables the fine-tuning of hyperparameters for each submodel independently, allowing better adaptation to the specific characteristics of each data subset.
+Each model in the ensemble is trained independently. This approach enables the fine-tuning of hyperparameters for each submodel independently, allowing better adaptation to the specific characteristics of each data subset. In the notebooks from the `experiments` folder you will find examples of how to train each submodel of the ensemble, and how to get data inferences.
+
+## Conclusion
+
+The **Multiplex Classification Framework** offers a robust and flexible tool for addressing complex classification problems, particularly in scenarios involving numerous classes and logical constraints. Its modular design and innovative problem transformation techniques make it a valuable addition to the toolbox of researchers and practitioners in machine learning.
+
+For any questions, feedback, or contributions, please feel free to open an issue or submit a pull request. Your input is welcome and appreciated!

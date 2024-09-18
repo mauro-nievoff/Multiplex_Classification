@@ -18,18 +18,18 @@ The framework is particularly effective in scenarios with numerous classes and l
 - Experimental Files: Datasets, Jupyter notebooks, and OWL files from experiments conducted on the HyperKvasir and MultiCaRe datasets.
 
 ## How to use
-1. Clone the repository:
+### 1. Clone the repository:
 ```python
 !git clone https://github.com/mauro-nievoff/Multiplex_Classification
 !pip install -r Multiplex_Classification/requirements.txt
 ```
 
-2. Import the relevant classes
+### 2. Import the relevant classes
 ```python
-from Multiplex_Classification.multiplex import MultiplexTaxonomyProcessor, MultiplexDatasetProcessor
+from Multiplex_Classification.multiplex import *
 ```
 
-3. Adapt your dataset based on your taxonomy:
+### 3. Adapt your dataset based on your taxonomy:
 ```python
 mdp = MultiplexDatasetProcessor(input_owl_path = 'path_to_your_taxonomy.owl', input_csv_path = 'path_to_your_dataset.csv')
 ```
@@ -37,6 +37,18 @@ mdp = MultiplexDatasetProcessor(input_owl_path = 'path_to_your_taxonomy.owl', in
 ## Practical example
 
 ### Taxonomy adaptation
-
+First, the initial taxonomy is adapted following the steps explained in the Multiplex Classification Framework paper. The new taxonomy reflects class hierarchies and other logical constraints:
+<p align="center">
+  <img src=https://github.com/user-attachments/assets/d037b774-a046-4132-a184-dde7c79c2b32 width="500">
+</p>
+In the image, black ovals represent classes, and blue rectangles represent the basic classification tasks that compose the whole classification problem. An OWL file should be created based on this class structure, as explained in the paper.
 
 ### Dataset adaptation
+Then, the input dataset is turned into a Multiplex dataset, with one column per classification model:
+<p align="center">
+  <img src=https://github.com/user-attachments/assets/ca39bc38-47f0-4173-abf8-6e2f8de00bd3 width="1000">
+</p>
+In the process, labels are added or removed considering the logical constraints between classes. In this case, model_2 consists of a multi-task model.
+
+### Model training
+Each model in the ensemble is trained independently (refer to the notebooks from the `experiment` folder for examples). This approach enables the fine-tuning of hyperparameters for each submodel independently, allowing better adaptation to the specific characteristics of each data subset.

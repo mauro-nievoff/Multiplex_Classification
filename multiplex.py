@@ -723,9 +723,13 @@ class MultiplexDatasetProcessor():
     '''This method is used to merge columns that correspond to the same conditioning class for multitask classifiers.'''
 
     merging_dict = self._create_merging_dict(df.columns)
+
     for new_column, old_columns in merging_dict.items():
       df[new_column] = df[old_columns].apply(list, axis=1)
-      df.drop(old_columns, axis=1, inplace=True)
+    
+    for key in merging_dict.keys():
+      df.drop(merging_dict[key], axis=1, inplace=True)
+      
     return df
 
   def _create_multilabel_column(self, row, label_columns):

@@ -554,7 +554,7 @@ class MultiplexDatasetProcessor():
     data.drop(self.input_label_column, axis = 1, inplace = True)
     data = data.explode('label')
 
-    data = data.merge(self.mop.class_map[~self.mop.class_map.class_path.str.startswith('postprocessing:')], left_on='label', right_on='class_name', how = 'left').drop(['label', 'class_name'], axis = 1)
+    data = data.merge(self.class_map[~self.class_map.class_path.str.startswith('postprocessing:')], left_on='label', right_on='class_name', how = 'left').drop(['label', 'class_name'], axis = 1)
     data = data.drop_duplicates()
     data.fillna('', inplace=True)
 
@@ -583,8 +583,8 @@ class MultiplexDatasetProcessor():
       return self._merge_columns(data).copy()
 
   def _preprocess(self, value):
-    if value in self.mop.preprocessing_mapping_dict:
-      return self.mop.preprocessing_mapping_dict[value]
+    if value in self.preprocessing_mapping_dict:
+      return self.preprocessing_mapping_dict[value]
     else:
       return [value]
 
@@ -666,11 +666,11 @@ class MultiplexDatasetProcessor():
     '''This method is used to get all the exclusion dictionaries.'''
 
     if isinstance(self.exclusion_classes, list):
-      filtering_conditions = (self.mop.class_map.class_name in self.exclusion_classes)
+      filtering_conditions = (self.class_map.class_name in self.exclusion_classes)
     else:
-      filtering_conditions = (self.mop.class_map.class_name == 'exclusion_class')|(self.mop.class_map.class_name.str.startswith('other_'))|(self.mop.class_map.class_name.str.startswith('no_'))
+      filtering_conditions = (self.class_map.class_name == 'exclusion_class')|(self.class_map.class_name.str.startswith('other_'))|(self.class_map.class_name.str.startswith('no_'))
     exclusion_class_paths = []
-    for class_path in self.mop.class_map[filtering_conditions]['class_path']:
+    for class_path in self.class_map[filtering_conditions]['class_path']:
       exclusion_class_paths.append(self._create_exclusion_dictionary(class_path))
     return exclusion_class_paths
 

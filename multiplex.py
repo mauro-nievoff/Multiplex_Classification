@@ -44,6 +44,15 @@ class MultiplexTaxonomyProcessor():
       except:
         self.rainforest_format_taxonomy = self._get_taxonomy()
     self.class_map = self._create_class_map()
+    self.postprocessing_class_map = self.class_map[self.class_map['class_path'].str.startswith('postprocessing')].reset_index(drop=True)
+    self.class_map = self.class_map[~self.class_map['class_path'].str.startswith('postprocessing')].reset_index(drop=True)
+    self.class_map['column_name'] = self.class_map.apply(lambda x: x['class_path'][:-(len(x['class_name'])+1)], axis = 1)
+    self.class_map['conditioning_class'] = self.class_map.apply(lambda x: self._get_conditioning_class(x['column_name']), axis = 1)
+    subsidiary_tree_classes = self.class_map.groupby('conditioning_class')['column_name'].agg(lambda x: x.nunique() > 1).reset_index().rename({'column_name': 'has_subsidiary_tree'}, axis = 1).copy()
+    self.class_map = pd.merge(self.class_map, subsidiary_tree_classes, on='conditioning_class', how='left')
+    self.class_map['column_name'] = self.class_map.apply(lambda x: self._fix_column_name(x), axis = 1)
+    self.class_map.drop('has_subsidiary_tree', axis = 1, inplace = True)
+
     try:
       self._find_class_with_multiple_parents()
     except RecursionError:
@@ -304,6 +313,28 @@ class MultiplexTaxonomyProcessor():
           mapping_dict[child.label[0]].append(related_class.label[0])
     return mapping_dict
 
+  def _get_conditioning_class(self, column_name):
+
+    '''This method is used to identify the conditioning class given a class path.'''
+
+    colon_idx = max([column_name.rfind(':'), column_name.rfind('.')])
+    class_separator_idx = max([column_name.rfind('~')])
+    if colon_idx > class_separator_idx:
+      return column_name
+    elif class_separator_idx != -1:
+      return column_name[:class_separator_idx]
+    else:
+      return self.root_class
+
+  def _fix_column_name(self, row):
+
+    '''This method is used to add '~main' to column names if a there are subsidiary trees for the same conditioning class.'''
+
+    if (row['column_name'] == row['conditioning_class']) and row['has_subsidiary_tree']:
+      return row['column_name'] + '~main'
+    else:
+      return row['column_name']
+
     ### Methods for Creating Dicts with Class Information
 
   def _adapt_preprocessing_dict(self):
@@ -496,7 +527,7 @@ class MultiplexDatasetProcessor():
           - 'multiplex_without_merging': One column per classification task (no column merging is applied).
           - 'multilabel': All labels are included in one single column.
 
-    exclusion_classes: bool or list, default True
+    exclusion_classes: bool or list, default False
         If a list of labels is provided, they will be considered to be the default value for the corresponding classification task if a certain classified row has no specific label available.
         For example, if exclussion_classes = ['cat'] is provided, then in the classification task that contains the class 'cat' that class will be used for any instance that does not have any label for that task.
         Default labels are applied only to rows that belong to the parent class from the given default class.
@@ -554,15 +585,27 @@ class MultiplexDatasetProcessor():
     data.drop(self.input_label_column, axis = 1, inplace = True)
     data = data.explode('label')
 
-    data = data.merge(self.mtp.class_map[~self.mtp.class_map.class_path.str.startswith('postprocessing:')], left_on='label', right_on='class_name', how = 'left').drop(['label', 'class_name'], axis = 1)
+    data = data.merge(self.mtp.class_map[['class_name', 'class_path']], left_on='label', right_on='class_name', how = 'left').drop(['label', 'class_name'], axis = 1)
+
     data = data.drop_duplicates()
     data.fillna('', inplace=True)
 
-    # If the same instance has multiple label, this part of the code makes sure that they are compatible.
+    # # If the same instance has multiple label, this part of the code makes sure that they are compatible.
     data = data.groupby([c for c in data.columns if c != 'class_path']).agg(list).reset_index()
+
     data['class_path'] = data['class_path'].apply(self._get_compatible_values)
     initial_columns = [c for c in data.columns if c != 'class_path']
-    data = data.join(pd.json_normalize(data.pop('class_path')))
+
+    column_replacement_dict = {new_name[:-(len('~main'))]: new_name for new_name in self.mtp.class_map[self.mtp.class_map['column_name'].str.endswith('~main')]['column_name'].unique()}
+
+    data['class_path'] = data['class_path'].apply(lambda x: self._replace_keys(x, column_replacement_dict))
+
+    column_names = sorted(self.mtp.class_map.column_name.unique())
+    data[column_names] = None
+
+    data = data.apply(lambda x: self._add_dict_values(x), axis = 1)
+
+    data.drop('class_path', axis = 1, inplace = True)
 
     # Missing labels are replaced by exclusion classes.
     if self.exclusion_classes:
@@ -645,6 +688,20 @@ class MultiplexDatasetProcessor():
 
     return filtered_dict
 
+  def _replace_keys(self, dict_a, dict_b):
+
+    '''This method is used to replace the keys of one dictionary considering the keys of another one.'''
+
+    return {dict_b.get(k, k): v for k, v in dict_a.items()}
+
+  def _add_dict_values(self, row):
+
+    '''This method is used to add the values from the class_path dictonaries to the corresponding dataframe columns.'''
+
+    for k, v in row['class_path'].items():
+      row[k] = v
+    return row
+
   def _create_exclusion_dictionary(self, class_path):
 
     '''Given the class_path from an exclusion class, this method returns a dictionary to use such class as a default value.'''
@@ -684,38 +741,22 @@ class MultiplexDatasetProcessor():
           row[dct['column_name']] = dct['exclusion_class']
     return row
 
-  def _get_conditioning_classes(self, columns):
-
-    '''This method is used to get all the conditioning classes from a list of columns.'''
-
-    conditioning_classes = set()
-    for column in columns:
-      if ('~' in column) and (':' not in column.split('~')[-1]):
-        conditioning_classes.add('~'.join(column.split('~')[:-1]))
-    return conditioning_classes
-
   def _create_merging_dict(self, columns):
 
     '''This method is used to create a dictionary with the values needed to merge columns that correspond to the same conditioning class.'''
 
-    merging_dict = {}
-    conditioning_classes = self._get_conditioning_classes(columns)
-    for conditioning_class in conditioning_classes:
-      merging_dict[conditioning_class] = []
-      for column in columns:
-        if (column == conditioning_class) or ('~'.join(column.split('~')[:-1]) == conditioning_class):
-          merging_dict[conditioning_class].append(column)
+    conditioning_class_df = self.mtp.class_map[['conditioning_class', 'column_name']].groupby('conditioning_class').agg(set).reset_index()
+    conditioning_class_df = conditioning_class_df[conditioning_class_df['column_name'].apply(lambda x: len(x) > 1)]
+    dictionary = dict(zip(conditioning_class_df['conditioning_class'], conditioning_class_df['column_name'].apply(lambda x: list(x))))
 
     outcome_dict = {}
-    for key in merging_dict.keys():
+    for key in dictionary.keys():
       strings = []
-      for col in merging_dict[key]:
-        if key != col:
-          strings.append(col[len(key)+1:])
-        else:
-          strings.append('main')
+      for col in dictionary[key]:
+        strings.append(col[len(key)+1:])
       new_key = key + '(' + '|'.join(strings) + ')'
-      outcome_dict[new_key] = merging_dict[key]
+      outcome_dict[new_key] = dictionary[key]
+
     return outcome_dict
 
   def _merge_columns(self, df):

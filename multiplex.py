@@ -778,4 +778,35 @@ class MultiplexDatasetProcessor():
     '''This method is used to merge all the columns with labels in a single multilabel column.'''
 
     col_list = [row[col] for col in label_columns]
-    return [x for x in col_list if x != '']
+    outcome_list = []
+    for l in col_list:
+      if isinstance(l, list):
+        for element in l:
+          if element:
+            outcome_list.append(element)
+      elif l:
+        outcome_list.append(l)
+
+    return outcome_list
+
+  def _add_compound_classes(self, label_list, postprocessing_dict):
+
+    '''This method is used to add compound classes to a label list if all the corresponding component labels are present.'''
+
+    outcome_list = label_list.copy()
+    for key in postprocessing_dict.keys():
+      condition = True
+      for value in postprocessing_dict[key]:
+        if value not in label_list:
+          condition = False
+      if condition:
+        outcome_list.append(key)
+    return outcome_list
+
+  def apply_postprocessing(self):
+
+    '''This method is used to add compound classes to the dataset. The label_list column is created if absent, and a new column with compound classes is added (postprocessed_label_list).'''
+
+    self.dataset['label_list'] = self.dataset.apply(lambda x: self._create_multilabel_column(x, self.label_columns), axis=1)
+    postprocessing_dict = {key: value for d in self.mtp.postprocessing_class_map.apply(lambda x: {x['class_name']: x['class_path'].split(':')[-1].split('+')}, axis = 1) for key, value in d.items()}
+    self.dataset['postprocessed_label_list'] = self.dataset['label_list'].apply(lambda x: self._add_compound_classes(x, postprocessing_dict))

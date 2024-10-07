@@ -594,7 +594,7 @@ class MultiplexDatasetProcessor():
     data = data.groupby([c for c in data.columns if c != 'class_path']).agg(list).reset_index()
 
     data['class_path'] = data['class_path'].apply(self._get_compatible_values)
-    initial_columns = [c for c in data.columns if c != 'class_path']
+    self.initial_columns = [c for c in data.columns if c != 'class_path']
 
     column_replacement_dict = {new_name[:-(len('~main'))]: new_name for new_name in self.mtp.class_map[self.mtp.class_map['column_name'].str.endswith('~main')]['column_name'].unique()}
 
@@ -618,7 +618,7 @@ class MultiplexDatasetProcessor():
     elif self.output_format == 'multiplex_without_merging':
       outcome_df = data.copy()
     elif self.output_format == 'multilabel':
-      label_columns = [c for c in data.columns if c not in initial_columns]
+      label_columns = [c for c in data.columns if c not in self.initial_columns]
       data['label_list'] = data.apply(lambda x: self._create_multilabel_column(x, label_columns), axis=1)
       data.drop(label_columns, axis=1, inplace=True)
       outcome_df = data.copy()

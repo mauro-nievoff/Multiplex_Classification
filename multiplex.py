@@ -614,16 +614,19 @@ class MultiplexDatasetProcessor():
 
     # Output format selection.
     if self.output_format == 'multiplex':
-      return self._merge_columns(data).copy()
+      outcome_df = self._merge_columns(data).copy()
     elif self.output_format == 'multiplex_without_merging':
-      return data.copy()
+      outcome_df = data.copy()
     elif self.output_format == 'multilabel':
       label_columns = [c for c in data.columns if c not in initial_columns]
-      data[self.input_label_column] = data.apply(lambda x: self._create_multilabel_column(x, label_columns), axis=1)
+      data['label_list'] = data.apply(lambda x: self._create_multilabel_column(x, label_columns), axis=1)
       data.drop(label_columns, axis=1, inplace=True)
-      return data.copy()
+      outcome_df = data.copy()
     else:
-      return self._merge_columns(data).copy()
+      outcome_df = self._merge_columns(data).copy()
+
+    self.label_columns = [c for c in outcome_df.columns if c not in self.initial_columns]
+    return outcome_df
 
   def _preprocess(self, value):
     if value in self.mtp.preprocessing_mapping_dict:

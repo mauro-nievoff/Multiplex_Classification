@@ -100,7 +100,6 @@ Applied Ontology. https://doi.org/10.1177/15705838251340362
 ## 🔗 Related Work & Resources
 
 - 🏥 [MultiCaRe Dataset](https://github.com/mauro-nievoff/MultiCaRe_Dataset) — applied for medical image classification with a 140+ class taxonomy
-- 🌙 [Paper Review on Moonlight](https://www.themoonlight.io/es/review/the-multiplex-classification-framework-optimizing-multi-label-classifiers-through-problem-transformation-ontology-engineering-and-model-ensembling) — accessible summary of the framework
 
 ---
 

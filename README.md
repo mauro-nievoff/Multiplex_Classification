@@ -17,6 +17,11 @@ Standard classification approaches (binary, multiclass, multi-label) work well f
 
 The Multiplex Classification Framework addresses all of these challenges.
 
+<div align="center">
+    <img width="700" alt="Main types of classification approaches and examples." src="https://github.com/user-attachments/assets/457d9bd5-d63f-4d47-a6b7-c9a3ddc7bdee" />
+    <p><em>Main types of classification approaches and examples.</em></p>
+</div>
+
 ---
 
 ## ✨ Key Features
